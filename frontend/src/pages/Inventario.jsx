@@ -4,27 +4,60 @@ export default function Inventario() {
   const [productos, setProductos] = useState([]);
   const [formData, setFormData] = useState({ referencia: '', nombre: '', descripcion: '', categoria: '', stock_minimo: 0 });
 
-  useEffect(() => {
-    fetch('http://localhost:3000/api/productos')
-      .then(res => res.json())
-      .then(data => setProductos(data));
-  }, []);
-
+  
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
+  
+
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        
+        const token = localStorage.getItem('token');
+        
+        const response = await fetch('http://localhost:3000/api/productos', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProductos(data);
+        } else {
+          console.error("Error al obtener productos, ¿token inválido?");
+        }
+      } catch (error) {
+        console.error("Error de conexión:", error);
+      }
+    };
+
+    fetchProductos();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token'); 
+
     const res = await fetch('http://localhost:3000/api/productos', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
+      },
       body: JSON.stringify(formData)
     });
+    
     if (res.ok) {
       const newProduct = { ...formData, id: Date.now() };
       setProductos([...productos, newProduct]);
-      setFormData({ referencia: '', nombre: '', descripcion: '', categoria: '', stock_minimo: 0 }); // Limpiar
+      setFormData({ referencia: '', nombre: '', descripcion: '', categoria: '', stock_minimo: 0 }); 
     }
   };
 
@@ -32,7 +65,7 @@ export default function Inventario() {
     <div>
       <h1 className="text-2xl font-bold mb-6 text-slate-800">Gestión de Inventario</h1>
       
-      {/* Formulario Funcional */}
+      {}
       <div className="bg-white p-6 rounded shadow-sm mb-8 border border-gray-100">
         <h2 className="text-lg font-semibold mb-4 text-slate-800">Añadir Nuevo Producto</h2>
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
@@ -45,7 +78,7 @@ export default function Inventario() {
         </form>
       </div>
 
-      {/* Lista de productos */}
+      {}
       <div className="bg-white rounded shadow-sm overflow-hidden border border-gray-100">
         <table className="w-full text-left">
           <thead className="bg-slate-800 text-white">
