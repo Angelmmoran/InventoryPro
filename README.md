@@ -52,6 +52,10 @@ Durante la conexión de las capas de la aplicación, se resolvieron los siguient
 ---
 
 ## 🏁 4. Conclusiones y Cierra del Proyecto
+
+Con el desarrollo de **InventoryPro** he logrado transformar un diseño técnico inicial en una aplicación Full Stack robusta, segura y completamente funcional. He cumplido los requisitos establecidos y se han realizado pruebas que avalan su estabilidad.
+
+
 * **Causa:** Archivos de React ubicados fuera del motor de compilación de Vite por una estructura de carpetas desorganizada.
 * **Solución:** Inicialización de un proyecto limpio en la carpeta `/frontend`, migración de componentes a `src/components` y limpieza de dependencias redundantes.
 
@@ -66,12 +70,6 @@ Durante la conexión de las capas de la aplicación, se resolvieron los siguient
 * **Dificultad:** Error de compilación en PostCSS (Tailwind no detectado como plugin).
 * **Causa:** Incompatibilidad de configuración con la nueva versión v4.0 de Tailwind instalada por defecto.
 * **Solución:** Instalación del paquete `@tailwindcss/vite`, configuración del plugin en `vite.config.js` y actualización de la directiva de estilos a `@import "tailwindcss";` en `index.css`.
-
----
-
-## 🏁 4. Conclusiones y Cierre del Proyecto
-
-Con el desarrollo de **InventoryPro** he logrado transformar un diseño técnico inicial en una aplicación Full Stack robusta, segura y completamente funcional. He cumplido los requisitos establecidos y se han realizado pruebas que avalan su estabilidad.
 
 ### 🧠 Lecciones Aprendidas
 
