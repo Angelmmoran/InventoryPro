@@ -51,10 +51,24 @@ Durante la conexión de las capas de la aplicación, se resolvieron los siguient
 
 ---
 
-## 🏁 4. Conclusiones
-La implementación parcial ha permitido validar la integridad del modelo de datos diseñado en la entrega anterior. Actualmente, la aplicación es capaz de:
-1. Conectarse y listar productos desde **MySQL**.
-2. Gestionar la navegación fluida entre vistas principales.
-3. Mantener la coherencia visual definida en la guía de estilo.
+## 🏁 4. Conclusiones y Cierra del Proyecto
+Con el desarrollo de InventoryPro he logrado transformar un diseño técnico inicial en una aplicación Full Stack robusta, segura y completamente funcional. He cumplido los requisitos establecidos y se han realizado pruebas que avalan su estabilidad.
+Lecciones Aprendidas
+Durante el ciclo de desarrollo, he consolidado conocimientos vitales para la ingeniería de software:
+La criticidad del Modelo de Datos
+Se evidenció que un diseño sólido de la base de datos es el pilar de la aplicación. Incidencias resueltas en vivo, como la normalización de la columna `stock` o la adaptación del campo `email` para la autenticación, demostraron cómo el backend y el frontend dependen estrictamente de la estructura de persistencia.
+Seguridad y Flujo de Autenticación
+La implementación de JSON Web Tokens (JWT) ha sido fundamental para comprender cómo se protegen las rutas en una arquitectura cliente-servidor (API REST) y cómo el navegador debe gestionar y enviar estos "pases" de forma segura en las cabeceras HTTP.
+Sincronización de Entornos y Resolución de Errores
+El trabajo simultáneo con Vite y Node/Express reforzó mi capacidad de lectura de logs de consola y el manejo de peticiones asíncronas, solucionando problemas clásicos de CORS, puertos no disponibles y módulos faltantes.
+
+Mejoras Posibles a Futuro
+Aunque el sistema actual cumple su propósito como Producto Mínimo Viable (MVP), la arquitectura diseñada permite una alta escalabilidad. Algunas mejoras planteadas para iteraciones futuras son:
+Roles y Permisos Avanzados
+Restringir ciertas acciones administrativas (como dar de alta nuevos productos o usuarios) exclusivamente al rol `admin`, limitando a los empleados estándar únicamente al registro de movimientos de entrada/salida.
+Paginación y Filtros de Búsqueda
+Implementar un sistema de búsqueda en tiempo real en la vista de Inventario para mantener un rendimiento óptimo de carga cuando la base de datos crezca en volumen de artículos.
+Generación de Reportes Exportables
+Añadir la capacidad de descargar el estado actual del inventario o el historial del registro de movimientos a formatos PDF o Excel para facilitar auditorías físicas del almacén.
 
 ---
