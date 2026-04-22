@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import mysql from 'mysql2/promise';
-import jwt from 'jsonwebtoken'; // <-- NUEVA LIBRERÍA
+import jwt from 'jsonwebtoken'; 
 
 const app = express();
 app.use(cors());
@@ -35,13 +35,13 @@ const verificarToken = (req, res, next) => {
   
   if (!token) return res.status(403).json({ mensaje: 'No hay token, acceso denegado' });
 
-  // El token suele venir como "Bearer eyJhbGci..." así que lo separamos
+  
   const tokenLimpio = token.split(' ')[1];
 
   jwt.verify(tokenLimpio, SECRET_KEY, (err, decoded) => {
     if (err) return res.status(401).json({ mensaje: 'Token inválido o expirado' });
-    req.usuario = decoded; // Guardamos los datos del usuario para usarlos luego si queremos
-    next(); // ¡Puede pasar!
+    req.usuario = decoded; 
+    next(); 
   });
 };
 
@@ -75,20 +75,26 @@ app.get('/api/productos', verificarToken, async (req, res) => {
 });
 
 
+
 app.post('/api/movimientos', verificarToken, async (req, res) => {
   const { producto_id, tipo, cantidad } = req.body;
   const usuario_id = req.usuario.id; 
+  
+  
+  const cantidadReal = parseInt(cantidad, 10);
 
   try {
+    
     await pool.query(
       'INSERT INTO Movimientos (producto_id, usuario_id, tipo, cantidad) VALUES (?, ?, ?, ?)',
-      [producto_id, usuario_id, tipo, cantidad]
+      [producto_id, usuario_id, tipo, cantidadReal]
     );
 
+    
     if (tipo === 'entrada') {
-      await pool.query('UPDATE Productos SET stock = stock + ? WHERE id = ?', [cantidad, producto_id]);
+      await pool.query('UPDATE Productos SET stock = stock + ? WHERE id = ?', [cantidadReal, producto_id]);
     } else if (tipo === 'salida') {
-      await pool.query('UPDATE Productos SET stock = stock - ? WHERE id = ?', [cantidad, producto_id]);
+      await pool.query('UPDATE Productos SET stock = stock - ? WHERE id = ?', [cantidadReal, producto_id]);
     }
 
     res.json({ success: true, mensaje: 'Movimiento registrado y stock actualizado' });
@@ -98,6 +104,23 @@ app.post('/api/movimientos', verificarToken, async (req, res) => {
   }
 });
 
+// 4. ENDPOINT PROTEGIDO: Crear Nuevo Producto
+app.post('/api/productos', verificarToken, async (req, res) => {
+  const { referencia, nombre, descripcion, categoria, stock_minimo } = req.body;
+  
+  try {
+    
+    const [result] = await pool.query(
+      'INSERT INTO Productos (referencia, nombre, descripcion, categoria, stock_minimo, stock) VALUES (?, ?, ?, ?, ?, 0)',
+      [referencia, nombre, descripcion, categoria, stock_minimo]
+    );
+
+    res.status(201).json({ success: true, mensaje: 'Producto creado', id: result.insertId });
+  } catch (error) {
+    console.error('Error al guardar el producto:', error);
+    res.status(500).json({ error: 'Error interno de la base de datos' });
+  }
+});
 
 const PORT = 3000;
 app.listen(PORT, () => {

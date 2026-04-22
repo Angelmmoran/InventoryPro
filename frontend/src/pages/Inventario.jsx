@@ -87,7 +87,9 @@ export default function Inventario() {
               <th className="p-3">Nombre</th>
               <th className="p-3">Categoría</th>
               <th className="p-3">Stock Mínimo</th>
+              <th className="p-3 bg-blue-600">Stock Actual</th> 
             </tr>
+            
           </thead>
           <tbody>
             {productos.map(p => (
@@ -96,6 +98,7 @@ export default function Inventario() {
                 <td className="p-3 font-medium">{p.nombre}</td>
                 <td className="p-3 text-gray-600">{p.categoria}</td>
                 <td className="p-3 text-red-500">{p.stock_minimo}</td>
+                <td className="p-3 font-bold text-lg">{p.stock}</td>
               </tr>
             ))}
             {productos.length === 0 && (
